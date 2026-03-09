@@ -114,9 +114,101 @@
     .collapsible-content.open { display: block; }
     .collapsible-header.open .collapsible-arrow { transform: rotate(90deg); }
     @media (max-width: 640px) { .charts-row { grid-template-columns: 1fr; } .stats-row { justify-content: center; } }
+
+    /* === Interactive Enhancements === */
+
+    /* Scroll-reveal animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Staggered children */
+    .stagger-children > .reveal { transition-delay: 0s; }
+    .stagger-children > .reveal:nth-child(2) { transition-delay: 0.08s; }
+    .stagger-children > .reveal:nth-child(3) { transition-delay: 0.16s; }
+    .stagger-children > .reveal:nth-child(4) { transition-delay: 0.24s; }
+    .stagger-children > .reveal:nth-child(5) { transition-delay: 0.32s; }
+
+    /* Active nav link */
+    .nav-toc { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(12px); background: rgba(255,255,255,0.85); }
+    .nav-toc a.active { background: #0f172a; color: white; }
+
+    /* Stat counter animation */
+    .stat-value { transition: color 0.3s; }
+    .stat:hover .stat-value { color: #6366f1; }
+
+    /* Bar hover effects */
+    .bar-fill { transition: width 0.8s ease, filter 0.2s; }
+    .bar-row:hover .bar-fill { filter: brightness(1.15); }
+    .bar-row:hover .bar-label { color: #0f172a; font-weight: 500; }
+    .bar-row { transition: transform 0.15s; cursor: default; }
+    .bar-row:hover { transform: translateX(2px); }
+
+    /* Tooltip on bar hover */
+    .bar-row { position: relative; }
+    .bar-tooltip {
+      position: absolute;
+      left: 108px;
+      top: -28px;
+      background: #0f172a;
+      color: white;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+      z-index: 5;
+    }
+    .bar-row:hover .bar-tooltip { opacity: 1; }
+
+    /* Card hover lift */
+    .project-area, .big-win, .friction-category, .feature-card, .pattern-card, .horizon-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .project-area:hover, .big-win:hover, .friction-category:hover,
+    .feature-card:hover, .pattern-card:hover, .horizon-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* Progress bar at top */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #6366f1, #8b5cf6);
+      z-index: 100;
+      transition: width 0.1s;
+      width: 0%;
+    }
+
+    /* Copy button feedback */
+    .copy-btn { transition: background 0.2s, color 0.2s; }
+    .copy-btn.copied { background: #16a34a; color: white; }
+
+    /* Fun ending hover */
+    .fun-ending { transition: transform 0.3s ease; }
+    .fun-ending:hover { transform: scale(1.01); }
+
+    /* At a glance section links */
+    .glance-section { transition: padding-left 0.2s; }
+    .glance-section:hover { padding-left: 4px; }
   </style>
 </head>
 <body>
+  <div class="progress-bar" id="progress-bar"></div>
   <div class="container">
     <h1>Claude Code Insights</h1>
     <p class="subtitle">1,688 messages across 149 sessions (166 total) | 2026-02-06 to 2026-03-09</p>
@@ -987,6 +1079,118 @@ EOF</code>
       const offset = parseInt(this.value) + 8;
       updateHourHistogram(offset);
     });
+
+    // === Interactive Enhancements ===
+
+    // 1. Reading progress bar
+    window.addEventListener('scroll', () => {
+      const winH = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = (window.scrollY / winH) * 100;
+      document.getElementById('progress-bar').style.width = pct + '%';
+    });
+
+    // 2. Scroll-reveal: add .reveal to animatable elements
+    document.querySelectorAll('.project-area, .big-win, .friction-category, .feature-card, .pattern-card, .horizon-card, .chart-card, .narrative, .at-a-glance, .claude-md-section, .fun-ending, h2, .stats-row').forEach(el => {
+      el.classList.add('reveal');
+    });
+    // Stagger project areas and similar lists
+    document.querySelectorAll('.project-areas, .big-wins, .friction-categories, .features-section, .patterns-section, .horizon-section').forEach(el => {
+      el.classList.add('stagger-children');
+    });
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // 3. Active nav highlighting on scroll
+    const navLinks = document.querySelectorAll('.nav-toc a');
+    const sections = Array.from(navLinks).map(a => {
+      const id = a.getAttribute('href').replace('#', '');
+      return { link: a, el: document.getElementById(id) };
+    }).filter(s => s.el);
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          const match = sections.find(s => s.el === e.target);
+          if (match) match.link.classList.add('active');
+        }
+      });
+    }, { threshold: 0, rootMargin: '-20% 0px -70% 0px' });
+    sections.forEach(s => navObserver.observe(s.el));
+
+    // 4. Animated stat counters
+    function animateCounter(el, target) {
+      const isDecimal = target % 1 !== 0;
+      const duration = 1200;
+      const start = performance.now();
+      function tick(now) {
+        const t = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - t, 3);
+        const val = ease * target;
+        el.textContent = isDecimal ? val.toFixed(1) : Math.round(val).toLocaleString();
+        if (t < 1) requestAnimationFrame(tick);
+        else el.textContent = isDecimal ? target.toFixed(1) : target.toLocaleString();
+      }
+      requestAnimationFrame(tick);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !e.target.dataset.counted) {
+          e.target.dataset.counted = '1';
+          e.target.querySelectorAll('.stat-value').forEach(sv => {
+            const raw = sv.textContent.replace(/,/g, '');
+            const num = parseFloat(raw);
+            if (!isNaN(num) && !/[\/+\-]/.test(raw)) {
+              animateCounter(sv, num);
+            }
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.stats-row').forEach(el => statsObserver.observe(el));
+
+    // 5. Bar percentage tooltips
+    document.querySelectorAll('.bar-row').forEach(row => {
+      const fill = row.querySelector('.bar-fill');
+      const label = row.querySelector('.bar-label');
+      const value = row.querySelector('.bar-value');
+      if (fill && label && value) {
+        const pct = parseFloat(fill.style.width) || 0;
+        if (pct > 0) {
+          const tip = document.createElement('div');
+          tip.className = 'bar-tooltip';
+          tip.textContent = label.textContent + ': ' + value.textContent + ' (' + Math.round(pct) + '%)';
+          row.appendChild(tip);
+        }
+      }
+    });
+
+    // 6. Animate bars on scroll (start at 0 width, grow in)
+    document.querySelectorAll('.bar-fill').forEach(bar => {
+      const w = bar.style.width;
+      bar.dataset.targetWidth = w;
+      bar.style.width = '0%';
+    });
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.bar-fill').forEach(bar => {
+            setTimeout(() => { bar.style.width = bar.dataset.targetWidth; }, 100);
+          });
+          barObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.chart-card').forEach(el => barObserver.observe(el));
   </script>
 </body>
 </html>
