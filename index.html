@@ -161,15 +161,15 @@
             <span class="area-name">Shumi Bot Development &amp; Deployment</span>
             <span class="area-count">~15 sessions</span>
           </div>
-          <div class="area-desc">Extensive work on the shumi-bot Telegram trading bot including merging 24 tools from coinrotator-utils, implementing features like /council strategy mode and janitor audit modules, fixing duplicate signal bugs, and deploying to Render. Claude Code handled multi-file refactors, tool consolidation, sentiment engine improvements, and production deployments across interconnected repos.</div>
+          <div class="area-desc">Extensive work on the shumi-bot Telegram bot including merging 24 tools from a shared utilities package, implementing new features and audit modules, fixing duplicate signal bugs, and deploying to Render. Claude Code handled multi-file refactors, tool consolidation, engine improvements, and production deployments across interconnected repos.</div>
         </div>
       
         <div class="project-area">
           <div class="area-header">
-            <span class="area-name">Trading Infrastructure &amp; Data Pipeline</span>
+            <span class="area-name">Backend Infrastructure &amp; Data Pipeline</span>
             <span class="area-count">~12 sessions</span>
           </div>
-          <div class="area-desc">Work across coinrotator repos on futures data ingestion consolidation, funding rate standardization to annualized format across 5+ repos, risk management endpoint development, classifier latency optimization, and Twitter sentiment integration. Claude audited data paths, debugged endpoint issues, deployed prompt changes to production, and helped architect the risk-context feature.</div>
+          <div class="area-desc">Work across multiple repos on data ingestion consolidation, format standardization across 5+ repos, endpoint development, classifier latency optimization, and third-party API integration. Claude audited data paths, debugged endpoint issues, deployed prompt changes to production, and helped architect new features.</div>
         </div>
       
         <div class="project-area">
@@ -331,7 +331,7 @@
     <h2 id="section-usage">How You Use Claude Code</h2>
     <div class="narrative">
       <p>You are a <strong>high-velocity operator</strong> managing a complex multi-repo ecosystem (shumi-bot, coinrotator, shumi-landing, shumi-doctor, and more) across 149 sessions in just one month. Your style is to <strong>jump in with context from previous sessions and expect Claude to keep up</strong>, often referencing handoffs, specific branches, or prior work without much preamble. With an average of ~11 messages per session and 214 commits across the period, you clearly favor <strong>rapid iteration over detailed upfront specs</strong> — you'd rather course-correct mid-stream than spend time writing requirements. This is evident in your top friction category being &quot;wrong_approach&quot; (28 instances), where Claude heads in a direction you didn't intend and you pull it back. You're not afraid to interrupt and redirect, as seen in sessions where you repeatedly corrected Claude for working in the wrong repo or using the wrong MCP tool.</p>
-<p>Your work spans an impressive breadth — from <strong>git operations and deployment pipelines</strong> to visual tuning of physarum animations, infrastructure monitoring dashboards, and Twitter content preparation. You treat Claude as a <strong>full-stack co-pilot</strong> rather than a code completion tool, delegating multi-file refactors, cross-repo audits, and even strategic product thinking. The 23 successful multi-file changes and your heavy reliance on Bash (2,560 calls) and Grep (933 calls) show you value Claude's ability to <strong>navigate and surgically modify large codebases</strong>. Your most satisfying sessions (rated &quot;essential&quot;) consistently involve complex operations like merging 24 tools across repos, fixing git remote mismatches across multiple forks, or standardizing funding rates across 5+ services — tasks where Claude's ability to hold context across many files shines.</p>
+<p>Your work spans an impressive breadth — from <strong>git operations and deployment pipelines</strong> to visual tuning of physarum animations, infrastructure monitoring dashboards, and Twitter content preparation. You treat Claude as a <strong>full-stack co-pilot</strong> rather than a code completion tool, delegating multi-file refactors, cross-repo audits, and even strategic product thinking. The 23 successful multi-file changes and your heavy reliance on Bash (2,560 calls) and Grep (933 calls) show you value Claude's ability to <strong>navigate and surgically modify large codebases</strong>. Your most satisfying sessions (rated &quot;essential&quot;) consistently involve complex operations like merging 24 tools across repos, fixing git remote mismatches across multiple forks, or standardizing data formats across 5+ services — tasks where Claude's ability to hold context across many files shines.</p>
 <p>Notably, your <strong>frustration tolerance is high but not infinite</strong>. You ran into repeated issues with Claude operating in the wrong repo or misunderstanding which tool/MCP to use (19 misunderstood requests), and while you corrected patiently most of the time, a few sessions ended in abandonment when the loop became unproductive. You've clearly built workflows around handoff documents, AGENTS.md files, and session state — investing in <strong>infrastructure to make Claude more effective across sessions</strong> rather than treating each interaction as standalone.</p>
       <div class="key-insight"><strong>Key pattern:</strong> You operate as a fast-moving multi-repo architect who delegates aggressively, expects Claude to infer context from minimal prompts, and course-corrects frequently rather than specifying upfront.</div>
     </div>
@@ -482,12 +482,12 @@
 
     
     <h2 id="section-wins">Impressive Things You Did</h2>
-    <p class="section-intro">Over the past month, you've run 149 sessions across a sophisticated multi-repo crypto trading ecosystem, achieving high satisfaction and shipping consistently with 214 commits.</p>
+    <p class="section-intro">Over the past month, you've run 149 sessions across a sophisticated multi-repo ecosystem, achieving high satisfaction and shipping consistently with 214 commits.</p>
     <div class="big-wins">
       
         <div class="big-win">
           <div class="big-win-title">Multi-Repo Refactoring at Scale</div>
-          <div class="big-win-desc">You confidently orchestrate changes across 5+ interconnected repos — standardizing funding rates to annualized format, consolidating sentiment tools, and merging 24 tools from coinrotator-utils into shumi-bot in single sessions. Your ability to scope cross-repo refactors into safe incremental steps and validate plans before applying them shows real engineering discipline.</div>
+          <div class="big-win-desc">You confidently orchestrate changes across 5+ interconnected repos — standardizing data formats, consolidating shared tools, and merging 24 utilities into the main service in single sessions. Your ability to scope cross-repo refactors into safe incremental steps and validate plans before applying them shows real engineering discipline.</div>
         </div>
       
         <div class="big-win">
@@ -784,12 +784,12 @@ EOF</code>
         <div class="feature-card">
           <div class="feature-title">Task Agents</div>
           <div class="feature-oneliner">Claude spawns focused sub-agents for parallel exploration</div>
-          <div class="feature-why"><strong>Why for you:</strong> Your codebase audits span 5+ repos (funding rates across repos, sentiment consolidation, git remote fixes). Task agents can explore each repo in parallel instead of sequential searching, which would have saved time in your cross-repo standardization sessions.</div>
+          <div class="feature-why"><strong>Why for you:</strong> Your codebase audits span 5+ repos (data format standardization, tool consolidation, git remote fixes). Task agents can explore each repo in parallel instead of sequential searching, which would have saved time in your cross-repo standardization sessions.</div>
           
           <div class="feature-examples">
             <div class="feature-example">
               <div class="example-code-row">
-                <code class="example-code">Use an agent to audit all coinrotator and shumi repos for any hardcoded funding rate intervals, and report which files in each repo need annualized conversion</code>
+                <code class="example-code">Use an agent to audit all project repos for any hardcoded format values, and report which files in each repo need standardized conversion</code>
                 <button class="copy-btn" onclick="copyText(this)">Copy</button>
               </div>
             </div>
@@ -822,7 +822,7 @@ EOF</code>
         <div class="pattern-card">
           <div class="pattern-title">Break cross-repo refactors into per-repo sessions</div>
           <div class="pattern-summary">Instead of asking Claude to modify 5+ repos in one session, run one session per repo with a shared plan doc.</div>
-          <div class="pattern-detail">Your most successful sessions (essential-rated) were focused on one repo at a time. Cross-repo sessions like funding rate standardization and sentiment consolidation hit more friction. Write the plan in one session, then execute per-repo in separate sessions. This also avoids the directory-change limitation.</div>
+          <div class="pattern-detail">Your most successful sessions (essential-rated) were focused on one repo at a time. Cross-repo sessions like data format standardization and tool consolidation hit more friction. Write the plan in one session, then execute per-repo in separate sessions. This also avoids the directory-change limitation.</div>
           
           <div class="copyable-prompt-section">
             <div class="prompt-label">Paste into Claude Code:</div>
@@ -860,9 +860,9 @@ EOF</code>
       
         <div class="horizon-card">
           <div class="horizon-title">Multi-Repo Orchestration with Parallel Agents</div>
-          <div class="horizon-possible">Your biggest friction sources—wrong repo context (28 wrong-approach incidents), cross-repo confusion, and repeated corrections—can be eliminated by spawning dedicated sub-agents per repo. Imagine kicking off a single command that audits funding rates across all 5+ coinrotator repos simultaneously, applies standardized conversions, runs tests, and opens PRs—all in parallel with no context bleed between repos.</div>
+          <div class="horizon-possible">Your biggest friction sources—wrong repo context (28 wrong-approach incidents), cross-repo confusion, and repeated corrections—can be eliminated by spawning dedicated sub-agents per repo. Imagine kicking off a single command that audits data formats across all 5+ project repos simultaneously, applies standardized conversions, runs tests, and opens PRs—all in parallel with no context bleed between repos.</div>
           <div class="horizon-tip"><strong>Getting started:</strong> Use Claude Code's Task tool to spawn parallel sub-agents, each scoped to a single repo with explicit constraints. Combine with your existing AGENTS.md handoff protocols to maintain state across agents.</div>
-          <div class="pattern-prompt"><div class="prompt-label">Paste into Claude Code:</div><code>I need to propagate a change across multiple repos: [describe change]. For each of these repos: shumi-bot, coinrotator-ai, coinrotator-backend, coinrotator-utils, loris — spawn a separate sub-task that: 1) reads the repo's AGENTS.md and handoff state, 2) audits current implementation of [feature], 3) implements the standardized version, 4) runs any existing tests, 5) commits to a feature branch with a descriptive message, 6) reports back what changed and any issues. Do NOT mix repo contexts between sub-tasks. Aggregate results into a summary table when all complete.</code><button class="copy-btn" onclick="copyText(this)">Copy</button></div>
+          <div class="pattern-prompt"><div class="prompt-label">Paste into Claude Code:</div><code>I need to propagate a change across multiple repos: [describe change]. For each of these repos: shumi-bot, coinrotator-ai, coinrotator-backend, coinrotator-utils — spawn a separate sub-task that: 1) reads the repo's AGENTS.md and handoff state, 2) audits current implementation of [feature], 3) implements the standardized version, 4) runs any existing tests, 5) commits to a feature branch with a descriptive message, 6) reports back what changed and any issues. Do NOT mix repo contexts between sub-tasks. Aggregate results into a summary table when all complete.</code><button class="copy-btn" onclick="copyText(this)">Copy</button></div>
         </div>
       
         <div class="horizon-card">
